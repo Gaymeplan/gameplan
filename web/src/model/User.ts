@@ -5,3 +5,11 @@ export interface IUser {
     lastName: string;
     age: number;
 }
+
+export interface IUsers {
+    getUsers: IUser[];
+}
+
+export type IUserMutation = {
+    addUser: IUser;
+};

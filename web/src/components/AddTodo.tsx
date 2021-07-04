@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ApolloCache } from '@apollo/react-hooks';
 import { FetchResult } from 'apollo-boost';
 
-import { useTodoMutation } from '../graphql/Todo/useRequest';
+import { useTodoMutation } from '../graphql/Todo/ToDoRequest';
 import { ADD_TODO, GET_TODOS } from '../graphql/Todo/ToDoGraphQL';
 import { ITodo, ITodoMutation, ITodos } from '../model/ToDo';
 
