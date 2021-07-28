@@ -1,31 +1,15 @@
 import { Technique } from '../entity/Technique';
-import {
-    Arg,
-    Field,
-    InputType,
-    Int,
-    Mutation,
-    Query,
-    Resolver,
-} from 'type-graphql';
-
-@InputType()
-class TechniqueInput {
-    @Field()
-    name: string;
-
-    @Field()
-    description: string;
-}
+import { Arg, Int, Mutation, Query, Resolver } from 'type-graphql';
 
 @Resolver()
 export class TechniqueResolver {
     // create
     @Mutation(() => Technique)
     async createTechnique(
-        @Arg('options', () => TechniqueInput) options: TechniqueInput
+        @Arg('name', () => String) name: string,
+        @Arg('description', () => String) description: string
     ) {
-        const technique = await Technique.create(options).save();
+        const technique = await Technique.create({ name, description }).save();
         return technique;
     }
 
@@ -33,9 +17,10 @@ export class TechniqueResolver {
     @Mutation(() => Boolean)
     async updateTechnique(
         @Arg('id', () => Int) id: number,
-        @Arg('options', () => TechniqueInput) options: TechniqueInput
+        @Arg('name', () => String) name?: string,
+        @Arg('description', () => String) description?: string
     ) {
-        await Technique.update({ id }, options);
+        await Technique.update({ id }, { name, description });
         return true;
     }
 
@@ -49,5 +34,10 @@ export class TechniqueResolver {
     @Query(() => [Technique])
     techniques() {
         return Technique.find();
+    }
+
+    @Query(() => Technique)
+    getTechnique(@Arg('id', () => Int) id: number) {
+        return Technique.findOne({ id });
     }
 }
