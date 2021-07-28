@@ -1,43 +1,39 @@
 import { useMutation } from '@apollo/client';
-import { Intent, Toaster } from '@blueprintjs/core';
+import { Card, Intent } from '@blueprintjs/core';
 import {
-    Card,
+    Button,
     CardContent,
     createStyles,
+    FormControl,
     makeStyles,
+    TextField,
     Theme,
     Typography,
-    FormControl,
-    TextField,
-    Button,
 } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
 import React, { useState } from 'react';
 import AppToaster from '../../common/AppToaster';
-import { UPDATE_TECHNIQUE } from '../../gql/technique';
-import { ITechnique } from '../../model/technique';
+import { ADD_TECHNIQUE } from '../../gql/technique';
 
-type TechniqueEditorProps = {
-    technique: ITechnique;
+type TechniqueAddProps = {
     setOpen: any;
 };
 
-const TechniqueEditor = (props: TechniqueEditorProps) => {
+const TechniqueAdd = (props: TechniqueAddProps) => {
     const classes = useStyles();
-    const [name, setName] = useState(props.technique.name);
-    const [description, setDescription] = useState(props.technique.description);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
 
-    const [updateTechnique] = useMutation(UPDATE_TECHNIQUE);
+    const [addTechnique] = useMutation(ADD_TECHNIQUE);
 
     return (
-        <Card className={classes.root} variant="outlined">
+        <Card className={classes.root}>
             <Typography
                 variant="h4"
                 component="h4"
                 color="textSecondary"
                 gutterBottom
             >
-                Edit technique
+                Add a new technique
             </Typography>
             <CardContent>
                 <FormControl>
@@ -51,7 +47,7 @@ const TechniqueEditor = (props: TechniqueEditorProps) => {
                     />
                     <TextField
                         id="standard-basic"
-                        label="Name"
+                        label="Description"
                         value={description}
                         onChange={(event: any) => {
                             setDescription(event.target.value);
@@ -63,17 +59,16 @@ const TechniqueEditor = (props: TechniqueEditorProps) => {
                         color="primary"
                         style={{ marginTop: '1em' }}
                         onClick={() => {
-                            handleTechniqueUpdate(
-                                props.technique.id,
+                            handleTechniqueAdd(
                                 name,
                                 description,
-                                updateTechnique,
+                                addTechnique,
                                 AppToaster
                             );
                             props.setOpen(false);
                         }}
                     >
-                        Submit Changes
+                        Save Technique
                     </Button>
                 </FormControl>
             </CardContent>
@@ -81,8 +76,7 @@ const TechniqueEditor = (props: TechniqueEditorProps) => {
     );
 };
 
-const handleTechniqueUpdate = (
-    id: number,
+const handleTechniqueAdd = (
     name: string,
     description: string,
     mutation: any,
@@ -90,7 +84,6 @@ const handleTechniqueUpdate = (
 ) => {
     mutation({
         variables: {
-            id: id,
             name: name,
             description: description,
         },
@@ -98,12 +91,12 @@ const handleTechniqueUpdate = (
         if (result) {
             toaster.show({
                 intent: Intent.SUCCESS,
-                message: 'Technique updated',
+                message: `${name} added`,
             });
         } else {
             toaster.show({
                 intent: Intent.DANGER,
-                message: 'Error updating technique',
+                message: `Error adding ${name}`,
             });
         }
     });
@@ -139,4 +132,4 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-export default TechniqueEditor;
+export default TechniqueAdd;

@@ -4,13 +4,13 @@ import { Arg, Int, Mutation, Query, Resolver } from 'type-graphql';
 @Resolver()
 export class TechniqueResolver {
     // create
-    @Mutation(() => Technique)
+    @Mutation(() => Boolean)
     async createTechnique(
         @Arg('name', () => String) name: string,
         @Arg('description', () => String) description: string
     ) {
-        const technique = await Technique.create({ name, description }).save();
-        return technique;
+        await Technique.create({ name, description }).save();
+        return true;
     }
 
     // Update

@@ -22,16 +22,18 @@ export const TECHNIQUE_BY_ID = gql`
 
 export const ADD_TECHNIQUE = gql`
     mutation AddTechnique($name: String!, $description: String!) {
-        addTechnique(name: $name, description: $description) {
-            id
-            name
-            description
-        }
+        createTechnique(name: $name, description: $description)
     }
 `;
 
 export const UPDATE_TECHNIQUE = gql`
     mutation UpdateTechnique($id: Int!, $name: String!, $description: String!) {
         updateTechnique(id: $id, name: $name, description: $description)
+    }
+`;
+
+export const DELETE_TECHNIQUE = gql`
+    mutation DeleteTechnique($id: Int!) {
+        deleteTechnique(id: $id)
     }
 `;

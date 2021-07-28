@@ -11,15 +11,23 @@ import {
     Typography,
     createStyles,
 } from '@material-ui/core';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 import React, { useState } from 'react';
 import { ITechnique } from '../../model/technique';
 import TechniqueEditor from './technique-editor';
+import { DELETE_TECHNIQUE } from '../../gql/technique';
+import { useMutation } from '@apollo/client';
+import AppToaster from '../../common/AppToaster';
+import { Intent } from '@blueprintjs/core';
 
 type TechniqueProps = { technique: ITechnique };
 
 const Technique = (props: TechniqueProps) => {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
+
+    const [deleteTechnique] = useMutation(DELETE_TECHNIQUE);
 
     return (
         <div>
@@ -42,8 +50,27 @@ const Technique = (props: TechniqueProps) => {
                     </Typography>
                 </CardContent>
                 <CardActions>
-                    <Button size="small" onClick={() => setOpen(true)}>
-                        Edit This Technique
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        startIcon={<EditIcon />}
+                        onClick={() => setOpen(true)}
+                    >
+                        Edit
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        startIcon={<DeleteIcon />}
+                        onClick={() => {
+                            handleTechniqueDelete(
+                                props.technique,
+                                deleteTechnique,
+                                AppToaster
+                            );
+                        }}
+                    >
+                        Delete
                     </Button>
                 </CardActions>
             </Card>
@@ -60,11 +87,40 @@ const Technique = (props: TechniqueProps) => {
                 }}
             >
                 <Fade in={open}>
-                    <TechniqueEditor technique={props.technique} />
+                    <TechniqueEditor
+                        technique={props.technique}
+                        setOpen={setOpen}
+                    />
                 </Fade>
             </Modal>
         </div>
     );
+};
+
+const handleTechniqueDelete = (
+    technique: ITechnique,
+    mutation: any,
+    toaster: any
+) => {
+    mutation({
+        variables: {
+            id: technique.id,
+        },
+    }).then((result: any) => {
+        if (result.data) {
+            if (result) {
+                toaster.show({
+                    intent: Intent.SUCCESS,
+                    message: `${technique.name} Deleted`,
+                });
+            } else {
+                toaster.show({
+                    intent: Intent.DANGER,
+                    message: `Error adding ${technique.name}`,
+                });
+            }
+        }
+    });
 };
 
 const useStyles = makeStyles((theme: Theme) =>
