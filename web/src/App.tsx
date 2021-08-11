@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {
     Alignment,
-    Classes,
-    Icon,
     Menu,
     MenuItem,
     Navbar,
@@ -14,8 +11,6 @@ import {
     Tabs,
 } from '@blueprintjs/core';
 import Main from './components/Main';
-import GameplanManager from './components/Main';
-import styled from 'styled-components';
 
 function App() {
     const [colorMode, setColorMode] = useState('Light');

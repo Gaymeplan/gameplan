@@ -1,4 +1,4 @@
-import { Card, Classes, H1 } from '@blueprintjs/core';
+import { Card, Classes, H1, H2 } from '@blueprintjs/core';
 import React from 'react';
 import styled from 'styled-components';
 import GameplanSelector from './gameplan/GameplanSelector';
@@ -21,7 +21,7 @@ const Main = (props: MainProps) => {
                 </SideBar>
                 <Body>
                     <Card>
-                        <H1>Body</H1>
+                        <H2>Body</H2>
                     </Card>
                 </Body>
             </Container>

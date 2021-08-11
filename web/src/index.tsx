@@ -7,6 +7,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import 'normalize.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
+import { Provider } from 'react-redux';
 
 const client = new ApolloClient({
     uri: 'http://localhost:4000/graphql',

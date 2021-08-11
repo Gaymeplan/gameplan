@@ -1,4 +1,4 @@
-import { Gameplan } from 'src/entity/Gameplan';
+import { Gameplan } from '../entity/Gameplan';
 import { Arg, Int, Mutation, Query, Resolver } from 'type-graphql';
 
 @Resolver()
@@ -28,7 +28,7 @@ export class GameplanResolver {
     }
 
     @Query(() => [Gameplan])
-    techniques() {
+    gameplans() {
         return Gameplan.find();
     }
 

@@ -11,6 +11,4 @@ export class Gameplan extends BaseEntity {
     @Field()
     @Column()
     name: string;
-
-    // one to many relationship between gameplan and posistions...
 }
