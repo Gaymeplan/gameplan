@@ -1,27 +1,25 @@
-import { Card, Classes, H1, H2 } from '@blueprintjs/core';
-import React from 'react';
+import { Card } from '@blueprintjs/core';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import GameplanBody from './gameplan/gameplan-content/GameplanBody';
 import GameplanSelector from './gameplan/GameplanSelector';
 
 type MainProps = {};
 
 const Main = (props: MainProps) => {
+    const [gameplan, setGameplan] = useState();
+
     return (
         <Card style={{ marginTop: '31px', height: '1021px' }}>
             <Container>
-                {/* <Header>
-                    <Card>
-                        <H1>Header</H1>
-                    </Card>
-                </Header> */}
                 <SideBar>
                     <Card>
-                        <GameplanSelector />
+                        <GameplanSelector setGameplan={setGameplan} />
                     </Card>
                 </SideBar>
                 <Body>
                     <Card>
-                        <H2>Body</H2>
+                        <GameplanBody gameplan={gameplan} />
                     </Card>
                 </Body>
             </Container>
@@ -34,8 +32,6 @@ const Container = styled.div`
     grid-template-columns: repeat(9, 1fr);
     grid-auto-rows: minmax(100px, auto);
     grid-template-areas:
-        // 'hd hd hd hd hd hd hd hd hd'
-
         'sd sd main main main main main main main'
         'ft ft ft ft ft ft ft ft ft';
     grid-gap: 1em;

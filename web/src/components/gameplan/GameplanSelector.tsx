@@ -1,28 +1,19 @@
-import { useMutation, useQuery } from '@apollo/client';
-import {
-    Button,
-    Classes,
-    Dialog,
-    H1,
-    H2,
-    Intent,
-    Menu,
-    Spinner,
-} from '@blueprintjs/core';
+import { useQuery } from '@apollo/client';
+import { Button, H2, Intent, Menu, Spinner } from '@blueprintjs/core';
 import React, { useState } from 'react';
-import { ADD_GAMEPLAN, GAMEPLANS } from '../../gql/Gameplan';
+import { GAMEPLANS } from '../../gql/Gameplan';
 import IGameplan from '../../model/IGameplan';
-import AppToaster from '../common/AppToaster';
 import GameplanAdd from './GameplanAdd';
-import Gameplan from './GameplanMenuItem';
+import GameplanMenuItem from './GameplanMenuItem';
 
-type GameplanSelectorProps = {};
+type GameplanSelectorProps = {
+    setGameplan: any;
+};
 
 const GameplanSelector = (props: GameplanSelectorProps) => {
     const { loading, error, data } = useQuery(GAMEPLANS, {
         pollInterval: 5000,
     });
-    const [addGameplan] = useMutation(ADD_GAMEPLAN);
     const [showGameplanAdd, setShowGameplanAdd] = useState(false);
 
     if (loading) return <Spinner />;
@@ -37,42 +28,25 @@ const GameplanSelector = (props: GameplanSelectorProps) => {
                 style={{ width: '100%' }}
                 onClick={() => setShowGameplanAdd(true)}
             />
+
             <GameplanAdd
                 showGameplanAdd={showGameplanAdd}
                 setShowGameplanAdd={setShowGameplanAdd}
             />
+
             <Menu>
                 {data.gameplans.map((gameplan: IGameplan) => {
-                    return <Gameplan key={gameplan.id} gameplan={gameplan} />;
+                    return (
+                        <GameplanMenuItem
+                            key={gameplan.id}
+                            gameplan={gameplan}
+                            setGameplan={props.setGameplan}
+                        />
+                    );
                 })}
             </Menu>
         </div>
     );
-};
-
-const handleGameplanAdd = (name: string, mutation: any, toaster: any) => {
-    mutation({
-        variables: { name },
-    })
-        .then((result: any) => {
-            if (result) {
-                toaster.show({
-                    intent: Intent.SUCCESS,
-                    message: `${name} added`,
-                });
-            } else {
-                toaster.show({
-                    intent: Intent.DANGER,
-                    message: `Error adding ${name}`,
-                });
-            }
-        })
-        .catch((error: any) => {
-            toaster.show({
-                intent: Intent.DANGER,
-                message: `Something went wrong...`,
-            });
-        });
 };
 
 export default GameplanSelector;

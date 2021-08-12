@@ -1,9 +1,16 @@
 import { Field, Int, ObjectType } from 'type-graphql';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    BaseEntity,
+    Column,
+    Entity,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
+import Position from './Position';
 
 @ObjectType()
 @Entity()
-export class Gameplan extends BaseEntity {
+export default class Gameplan extends BaseEntity {
     @Field(() => Int)
     @PrimaryGeneratedColumn()
     id: number;
@@ -11,4 +18,10 @@ export class Gameplan extends BaseEntity {
     @Field()
     @Column()
     name: string;
+
+    @Field(() => [Position], { nullable: true })
+    @OneToMany(() => Position, (position: Position) => position.gameplan, {
+        eager: true,
+    })
+    positions: Position[];
 }

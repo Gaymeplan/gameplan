@@ -1,12 +1,22 @@
-import { Gameplan } from '../entity/Gameplan';
 import { Arg, Int, Mutation, Query, Resolver } from 'type-graphql';
+import Gameplan from '../entity/Gameplan';
+import Position, { PositionInput } from '../entity/Position';
 
 @Resolver()
 export class GameplanResolver {
     // create
     @Mutation(() => Boolean)
-    async createGameplan(@Arg('name', () => String) name: string) {
-        await Gameplan.create({ name }).save();
+    async createGameplan(
+        @Arg('name', () => String) name: string,
+        @Arg('positions', () => [PositionInput]) positions: PositionInput[]
+    ) {
+        const gameplan = await Gameplan.create({ name }).save();
+        console.log('GAMEPLAN ID', gameplan.id);
+        console.log(positions);
+        positions.forEach((position: PositionInput) => {
+            position.gameplanId = gameplan.id;
+            Position.create(position).save();
+        });
         return true;
     }
 
@@ -34,6 +44,9 @@ export class GameplanResolver {
 
     @Query(() => Gameplan)
     getGameplan(@Arg('id', () => Int) id: number) {
-        return Gameplan.findOne({ id });
+        let gameplan = Gameplan.findOne({ id });
+        // const positions = Position.find({gameplanId: id})
+        // gameplan.positions = [...positions];
+        return gameplan;
     }
 }
