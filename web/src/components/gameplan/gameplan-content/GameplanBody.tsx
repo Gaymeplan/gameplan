@@ -1,6 +1,7 @@
-import { H2 } from '@blueprintjs/core';
+import { Card, H2 } from '@blueprintjs/core';
 import React from 'react';
 import IGameplan from '../../../model/IGameplan';
+import IPosition from '../../../model/IPosition';
 
 type GameplanBodyProps = {
     gameplan?: IGameplan;
@@ -13,6 +14,11 @@ const GameplanBody = (props: GameplanBodyProps) => {
     return (
         <div>
             <H2>{props.gameplan?.name}</H2>
+            <Card>
+                {props.gameplan.positions.map((position: IPosition, index) => {
+                    return <div key={index}>{position.name}</div>;
+                })}
+            </Card>
         </div>
     );
 };

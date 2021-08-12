@@ -8,8 +8,11 @@ import {
     Intent,
 } from '@blueprintjs/core';
 import React, { useState } from 'react';
+import DEFAULT_POSITIONS from '../../DefaultPositions';
 import { ADD_GAMEPLAN } from '../../gql/Gameplan';
+import IPosition from '../../model/IPosition';
 import AppToaster from '../common/AppToaster';
+import Positions from './gameplan-content/position/Positions';
 
 type GameplanAddProps = {
     showGameplanAdd: boolean;
@@ -18,6 +21,7 @@ type GameplanAddProps = {
 
 const GameplanAdd = (props: GameplanAddProps) => {
     const [name, setName] = useState('');
+    const [positions, setPositions] = useState<IPosition[]>(DEFAULT_POSITIONS);
 
     const [addGameplan] = useMutation(ADD_GAMEPLAN);
 
@@ -42,12 +46,13 @@ const GameplanAdd = (props: GameplanAddProps) => {
                         onChange={(e) => setName(e.target.value)}
                     />
                 </FormGroup>
+                <Positions positions={positions} setPositions={setPositions} />
                 <Button
                     disabled={name.length === 0}
                     intent={Intent.SUCCESS}
                     text="Save"
                     onClick={() => {
-                        handleGameplanAdd(name, addGameplan);
+                        handleGameplanAdd(name, positions, addGameplan);
                         props.setShowGameplanAdd(false);
                         setName('');
                     }}
@@ -57,9 +62,13 @@ const GameplanAdd = (props: GameplanAddProps) => {
     );
 };
 
-const handleGameplanAdd = (name: string, mutation: any) => {
+const handleGameplanAdd = (
+    name: string,
+    positions: IPosition[],
+    mutation: any
+) => {
     mutation({
-        variables: { name },
+        variables: { name, positions },
     })
         .then((result: any) => {
             if (result) {

@@ -32,21 +32,24 @@ export class GameplanResolver {
 
     // Delete
     @Mutation(() => Boolean)
-    deleteGameplan(@Arg('id', () => Int) id: number) {
-        Gameplan.delete({ id });
+    async deleteGameplan(@Arg('id', () => Int) id: number) {
+        // have to use remove to cascade the deletions for related data :shrug:
+        const gameplan = await Gameplan.findOne({ id });
+        if (gameplan) {
+            Gameplan.remove(gameplan);
+        }
         return true;
     }
 
     @Query(() => [Gameplan])
     gameplans() {
+        console.log('getting all gameplans');
         return Gameplan.find();
     }
 
     @Query(() => Gameplan)
     getGameplan(@Arg('id', () => Int) id: number) {
         let gameplan = Gameplan.findOne({ id });
-        // const positions = Position.find({gameplanId: id})
-        // gameplan.positions = [...positions];
         return gameplan;
     }
 }

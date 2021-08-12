@@ -22,6 +22,7 @@ export default class Gameplan extends BaseEntity {
     @Field(() => [Position], { nullable: true })
     @OneToMany(() => Position, (position: Position) => position.gameplan, {
         eager: true,
+        onDelete: 'CASCADE',
     })
     positions: Position[];
 }

@@ -1,6 +1,7 @@
 export default interface IPosition {
-    id: number;
+    id?: number;
     name: string;
     description: string;
     attribute: string;
+    gameplanId?: number;
 }

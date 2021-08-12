@@ -5,13 +5,20 @@ export const GAMEPLANS = gql`
         gameplans {
             id
             name
+            positions {
+                id
+                name
+                description
+                attribute
+                gameplanId
+            }
         }
     }
 `;
 
 export const ADD_GAMEPLAN = gql`
-    mutation AddGameplan($name: String!) {
-        createGameplan(name: $name)
+    mutation AddGameplan($name: String!, $positions: [IPosition]) {
+        createGameplan(name: $name, positions: $positions)
     }
 `;
 
