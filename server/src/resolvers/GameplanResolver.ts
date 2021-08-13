@@ -1,4 +1,5 @@
 import { Arg, Int, Mutation, Query, Resolver } from 'type-graphql';
+import { getConnection } from 'typeorm';
 import Gameplan from '../entity/Gameplan';
 import Position, { PositionInput } from '../entity/Position';
 
@@ -33,11 +34,14 @@ export class GameplanResolver {
     // Delete
     @Mutation(() => Boolean)
     async deleteGameplan(@Arg('id', () => Int) id: number) {
-        // have to use remove to cascade the deletions for related data :shrug:
-        const gameplan = await Gameplan.findOne({ id });
-        if (gameplan) {
-            Gameplan.remove(gameplan);
-        }
+        await getConnection()
+            .createQueryBuilder()
+            .delete()
+            .from(Position)
+            .where('gameplanId = :id', { id })
+            .execute();
+
+        Gameplan.delete({ id });
         return true;
     }
 

@@ -4,6 +4,7 @@ import {
     Classes,
     Dialog,
     FormGroup,
+    HotkeysTarget2,
     InputGroup,
     Intent,
 } from '@blueprintjs/core';
@@ -25,41 +26,90 @@ const GameplanAdd = (props: GameplanAddProps) => {
 
     const [addGameplan] = useMutation(ADD_GAMEPLAN);
 
+    const hotkeys = [
+        {
+            combo: 'ctrl + enter',
+            global: true,
+            label: 'save new gameplan',
+            onKeyDown: () => {
+                saveGameplan(
+                    name,
+                    positions,
+                    addGameplan,
+                    props.setShowGameplanAdd,
+                    setName
+                );
+            },
+        },
+    ];
+
     if (!props.showGameplanAdd) return <div></div>;
     return (
-        <Dialog
-            isOpen={props.showGameplanAdd}
-            onClose={() => props.setShowGameplanAdd(false)}
-        >
-            <div className={Classes.DIALOG_HEADER}>Add Gameplan</div>
-            <div className={Classes.DIALOG_BODY}>
-                <FormGroup
-                    helperText="I.E (Naga Austin 2021)"
-                    label="Name"
-                    labelFor="text-input"
-                    labelInfo="(required)"
-                >
-                    <InputGroup
-                        id="text-input"
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
+        <HotkeysTarget2 hotkeys={hotkeys}>
+            <Dialog
+                isOpen={props.showGameplanAdd}
+                onClose={() => props.setShowGameplanAdd(false)}
+            >
+                <div className={Classes.DIALOG_HEADER}>Add Gameplan</div>
+                <div className={Classes.DIALOG_BODY}>
+                    <FormGroup
+                        helperText="I.E (Naga Austin 2021)"
+                        label="Name"
+                        labelFor="text-input"
+                        labelInfo="(required)"
+                    >
+                        <InputGroup
+                            id="text-input"
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    saveGameplan(
+                                        name,
+                                        positions,
+                                        addGameplan,
+                                        props.setShowGameplanAdd,
+                                        setName
+                                    );
+                                }
+                            }}
+                        />
+                    </FormGroup>
+                    <Positions
+                        positions={positions}
+                        setPositions={setPositions}
                     />
-                </FormGroup>
-                <Positions positions={positions} setPositions={setPositions} />
-                <Button
-                    disabled={name.length === 0}
-                    intent={Intent.SUCCESS}
-                    text="Save"
-                    onClick={() => {
-                        handleGameplanAdd(name, positions, addGameplan);
-                        props.setShowGameplanAdd(false);
-                        setName('');
-                    }}
-                />
-            </div>
-        </Dialog>
+                    <Button
+                        disabled={name.length === 0}
+                        intent={Intent.SUCCESS}
+                        text="Save"
+                        onClick={() => {
+                            saveGameplan(
+                                name,
+                                positions,
+                                addGameplan,
+                                props.setShowGameplanAdd,
+                                setName
+                            );
+                        }}
+                    />
+                </div>
+            </Dialog>
+        </HotkeysTarget2>
     );
+};
+
+const saveGameplan = (
+    name: string,
+    positions: IPosition[],
+    addGameplan: any,
+    setShowGameplanAdd: any,
+    setName: any
+) => {
+    handleGameplanAdd(name, positions, addGameplan);
+    setShowGameplanAdd(false);
+    setName('');
 };
 
 const handleGameplanAdd = (
@@ -88,6 +138,7 @@ const handleGameplanAdd = (
                 intent: Intent.DANGER,
                 message: `Something went wrong...`,
             });
+            console.warn(error, name, positions);
         });
 };
 
