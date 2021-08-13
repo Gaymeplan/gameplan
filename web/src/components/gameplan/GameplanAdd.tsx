@@ -13,7 +13,7 @@ import DEFAULT_POSITIONS from '../../DefaultPositions';
 import { ADD_GAMEPLAN } from '../../gql/Gameplan';
 import IPosition from '../../model/IPosition';
 import AppToaster from '../common/AppToaster';
-import Positions from './gameplan-content/position/Positions';
+import PositionsTable from './gameplan-content/position/PositionsTable';
 
 type GameplanAddProps = {
     showGameplanAdd: boolean;
@@ -76,7 +76,7 @@ const GameplanAdd = (props: GameplanAddProps) => {
                             }}
                         />
                     </FormGroup>
-                    <Positions
+                    <PositionsTable
                         positions={positions}
                         setPositions={setPositions}
                     />

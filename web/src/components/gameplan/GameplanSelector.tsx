@@ -18,6 +18,9 @@ const GameplanSelector = (props: GameplanSelectorProps) => {
 
     if (loading) return <Spinner />;
     if (error) return <p>Error...</p>;
+    if (data) {
+        props.setGameplan(data.gameplans[0]);
+    }
     return (
         <div>
             <H2>Gameplan Selector</H2>

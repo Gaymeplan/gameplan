@@ -1,10 +1,9 @@
-import { Classes, H4, HTMLTable } from '@blueprintjs/core';
 import React from 'react';
 import IPosition from '../../../../model/IPosition';
+import Position from './Position';
 
 type PositionsProps = {
-    positions: IPosition[];
-    setPositions: any;
+    positions?: IPosition[];
 };
 
 const Positions = (props: PositionsProps) => {
@@ -12,32 +11,13 @@ const Positions = (props: PositionsProps) => {
         <div
             style={{
                 display: 'grid',
-                gridTemplateColumns: '50% 50%',
+                gridTemplateColumns: '45% 45%',
                 gridGap: '2em',
+                marginLeft: '4em',
             }}
         >
-            {props.positions.map((position: IPosition, index) => {
-                return (
-                    <div key={index}>
-                        <H4 className={Classes.HEADING}>
-                            {position.attribute} - {position.name}
-                        </H4>
-                        <HTMLTable striped bordered condensed>
-                            <thead>
-                                <tr>
-                                    <th>A</th>
-                                    <th>B</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Technique A</td>
-                                    <td>Technique B</td>
-                                </tr>
-                            </tbody>
-                        </HTMLTable>
-                    </div>
-                );
+            {props.positions?.map((position, index) => {
+                return <Position key={index} position={position} />;
             })}
         </div>
     );
