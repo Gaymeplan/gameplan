@@ -21,11 +21,6 @@ type GameplanAddProps = {
 };
 
 const GameplanAdd = (props: GameplanAddProps) => {
-    const [name, setName] = useState('');
-    const [positions, setPositions] = useState<IPosition[]>(DEFAULT_POSITIONS);
-
-    const [addGameplan] = useMutation(ADD_GAMEPLAN);
-
     const hotkeys = [
         {
             combo: 'ctrl + enter',
@@ -42,6 +37,11 @@ const GameplanAdd = (props: GameplanAddProps) => {
             },
         },
     ];
+
+    const [name, setName] = useState('');
+    const [positions, setPositions] = useState<IPosition[]>(DEFAULT_POSITIONS);
+
+    const [addGameplan] = useMutation(ADD_GAMEPLAN);
 
     if (!props.showGameplanAdd) return <div></div>;
     return (

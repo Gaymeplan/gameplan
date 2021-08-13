@@ -1,5 +1,3 @@
-import { Field, InputType } from 'type-graphql';
-
 export default interface IPosition {
     id?: number;
     name: string;
@@ -8,8 +6,8 @@ export default interface IPosition {
     gameplanId?: number;
 }
 
-export default interface PositionInput {
-    id?: number;
+export interface PositionInput {
+    id: number;
     name: string;
     description: string;
     attribute: string;
