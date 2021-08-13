@@ -4,6 +4,7 @@ import 'reflect-metadata';
 import { buildSchema } from 'type-graphql';
 import { createConnection, getConnectionOptions } from 'typeorm';
 import { GameplanResolver } from './resolvers/GameplanResolver';
+import { PositionResolver } from './resolvers/PositionResolver';
 
 (async () => {
     const app = express();
@@ -16,7 +17,7 @@ import { GameplanResolver } from './resolvers/GameplanResolver';
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [GameplanResolver],
+            resolvers: [GameplanResolver, PositionResolver],
             validate: true,
         }),
         context: ({ req, res }) => ({ req, res }),

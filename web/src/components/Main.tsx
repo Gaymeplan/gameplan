@@ -10,7 +10,7 @@ const Main = (props: MainProps) => {
     const [gameplan, setGameplan] = useState();
 
     return (
-        <Card style={{ marginTop: '31px', height: '1021px' }}>
+        <Card style={{ marginTop: '31px', height: '100%' }}>
             <Container>
                 <SideBar>
                     <Card>
@@ -22,6 +22,7 @@ const Main = (props: MainProps) => {
                         <GameplanBody gameplan={gameplan} />
                     </Card>
                 </Body>
+                <Footer></Footer>
             </Container>
         </Card>
     );
@@ -48,6 +49,10 @@ const SideBar = styled.div`
 
 const Body = styled.div`
     grid-area: main;
+`;
+
+const Footer = styled.div`
+    grid-area: ft;
 `;
 
 export default Main;
